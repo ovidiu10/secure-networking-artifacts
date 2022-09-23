@@ -1,2 +1,2 @@
 # networking-artifacts
-Assets to suppoet Networking OpenHack
+Assets to support Networking OpenHack
