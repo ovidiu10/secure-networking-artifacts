@@ -81,12 +81,14 @@
       },
       "headerName": {
         "type": "string",
+        "defaultValue": "",
         "metadata": {
             "description": "If specified, the app will make sure that this HTTP header is present in the request, and equals the value of the parameter headerValue"
         }
       },
       "headerValue": {
         "type": "string",
+        "defaultValue": "",
         "metadata": {
             "description": "If specified, the app will make sure that the HTTP header in headerName is present in the request, and equals the value of this parameter"
         }
