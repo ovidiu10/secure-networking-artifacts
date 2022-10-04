@@ -78,13 +78,26 @@
         "metadata": {
             "description": "Background color for the web image. It can be used to distinguish between application environments, backend pool members or deployment regions"
         }
+      },
+      "headerName": {
+        "type": "string",
+        "metadata": {
+            "description": "If specified, the app will make sure that this HTTP header is present in the request, and equals the value of the parameter headerValue"
+        }
+      },
+      "headerValue": {
+        "type": "string",
+        "metadata": {
+            "description": "If specified, the app will make sure that the HTTP header in headerName is present in the request, and equals the value of this parameter"
+        }
       }
     },
     "variables": {
-      "containerImage": "erjosito/sqlweboh:1.0",
+      "containerImage": "erjosito/yadaweb:1.0",
       "networkInterfaceName": "[format('{0}-nic', parameters('vmName'))]",
       "osDiskType": "Standard_LRS",
-      "customData": "[concat('#!/bin/bash\ndocker run --restart always -d -p 80:80 -e \"BACKGROUND=', parameters('backgroundColor'),'\" -e \"API_URL=', parameters('apiURL'),'\" --name web ', variables('containerImage'))]"
+      "branding": "openhack",
+      "customData": "[concat('#!/bin/bash\ndocker run --restart always -d -p 80:80 -e \"BACKGROUND=', parameters('backgroundColor'),'\" -e \"HEADER_NAME=', parameters('headerName'),'\" -e \"HEADER_VALUE=', parameters('headerValue'),'\" -e \"API_URL=', parameters('apiURL'),'\" --name web ', variables('containerImage'))]"
     },
     "resources": [
       {
