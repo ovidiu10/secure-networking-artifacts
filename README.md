@@ -16,6 +16,7 @@ api_subnet_name=api
 api_subnet_prefix=172.16.0.0/26
 web_subnet_name=web
 web_subnet_prefix=172.16.0.64/26
+web_nsg_name=web
 sql_server_name=sqlserver$RANDOM
 sql_db_name=mydb
 sql_username=demouser
@@ -27,6 +28,13 @@ api_template_uri='https://raw.githubusercontent.com/Microsoft-OpenHack/secure-ne
 az group create -n $rg -l $location -o none
 az network vnet create -n $vnet_name -g $rg --address-prefixes $vnet_prefix --subnet-name $web_subnet_name --subnet-prefixes $web_subnet_prefix -o none
 az network vnet subnet create --vnet-name $vnet_name --name $api_subnet_name -g $rg --address-prefixes $api_subnet_prefix -o none
+
+# Create NSG and assign it to the web subnet
+az network nsg create -n "$web_nsg_name" -g $rg -l $location -o none
+az network nsg rule create -n WEBin --nsg-name "$web_nsg_name" -g $rg --priority 1000 --destination-port-ranges 80 --access Allow --protocol Tcp -o none
+az network nsg rule create -n SSHin --nsg-name "$web_nsg_name" -g $rg --priority 1010 --destination-port-ranges 22 --access Allow --protocol Tcp -o none
+az network nsg create -n "$app_nsg_name" -g $rg -l $location -o none
+az network vnet subnet update -n $web_subnet_name --vnet-name $vnet_name -g $rg --network-security-group $web_nsg_name -o none
 
 # Create Azure SQL Server
 az sql server create -n $sql_server_name -g $rg -l $location --admin-user "$sql_username" --admin-password "$sql_password" -o none
@@ -49,5 +57,6 @@ az network public-ip create -g $rg --sku Standard -n web-pip -o none
 az network nic ip-config update -n $web_ipconfig_name --nic-name $web_nic_name -g $rg --public-ip-address web-pip -o none
 
 # Finish
+web_pip_address=$(az network public-ip show -n web-pip -g $rg --query ipAddress -o tsv)
 echo "You can point your browser to http://${web_pip_address}"
 ```
