@@ -88,7 +88,7 @@
       }
     },
     "variables": {
-      "containerImage": "erjosito/sqlapioh:1.0",
+      "containerImage": "securenetworkingopenhack/yadaapi:1.0",
       "networkInterfaceName": "[format('{0}-nic', parameters('vmName'))]",
       "osDiskType": "Standard_LRS",
       "customData": "[concat('#!/bin/bash\ndocker run --restart always -d -p 8080:8080 -e \"SQL_SERVER_FQDN=', parameters('sqlServerFQDN'),'\" -e \"SQL_SERVER_USERNAME=', parameters('sqlServerUser'),'\" -e \"SQL_SERVER_PASSWORD=', parameters('sqlServerPassword'),'\" --name api ', variables('containerImage'))]"

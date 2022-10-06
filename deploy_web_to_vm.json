@@ -95,7 +95,7 @@
       }
     },
     "variables": {
-      "containerImage": "erjosito/yadaweb:1.0",
+      "containerImage": "securenetworkingopenstack/yadaweb:1.0",
       "networkInterfaceName": "[format('{0}-nic', parameters('vmName'))]",
       "osDiskType": "Standard_LRS",
       "branding": "openhack",
