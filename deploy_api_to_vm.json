@@ -20,14 +20,14 @@
         "type": "string",
         "defaultValue": "demouser",
         "metadata": {
-          "description": "Username for the Virtual Machine."
+          "description": "SSH username for the Virtual Machine."
         }
       },
       "adminPassword": {
         "type": "securestring",
         "defaultValue": "demo!pass123",
         "metadata": {
-          "description": "SSH Key or password for the Virtual Machine. SSH key is recommended."
+          "description": "SSH password for the Virtual Machine."
         }
       },
       "location": {
