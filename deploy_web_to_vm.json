@@ -163,6 +163,7 @@
             "customData": "[base64(variables('customData'))]",
             "adminUsername": "[parameters('adminUsername')]",
             "adminPassword": "[parameters('adminPassword')]"
+          }
         },
         "dependsOn": [
           "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]"
