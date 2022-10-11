@@ -27,7 +27,7 @@ web_template_uri='https://raw.githubusercontent.com/Microsoft-OpenHack/secure-ne
 
 # Create VM for API tier
 echo "Creating API VM..."
-az deployment group create -n app$RANDOM -g $rg --template-uri $api_template_uri \
+az deployment group create -n appvm -g $rg --template-uri $api_template_uri \
     --parameters vmName=api virtualNetworkName=$vnet_name sqlServerFQDN=$sql_server_fqdn sqlServerUser=$sql_username "sqlServerPassword=$sql_password" subnetName=$api_subnet_name availabilityZone=1
 ```
 
@@ -45,11 +45,11 @@ rg=your_resource_group
 location=your_azure_region
 vnet_name=your_vnet_name
 web_subnet_name=your_web_subnet
-api_url="http://1.2.3.4:8080"
+api_ip_address="1.2.3.4"
 web_template_uri='https://raw.githubusercontent.com/Microsoft-OpenHack/secure-networking-artifacts/main/deploy_web_to_vm.json'
 
 # Create VM for web tier
 echo "Creating web VM..."
-az deployment group create -n web$RANDOM -g $rg --template-uri $web_template_uri \
-    --parameters vmName=web virtualNetworkName=$vnet_name "apiUrl=http://${api_private_ip}:8080" subnetName=$web_subnet_name availabilityZone=1
+az deployment group create -n webvm -g $rg --template-uri $web_template_uri \
+    --parameters vmName=web virtualNetworkName=$vnet_name "apiUrl=http://${api_ip_address}:8080" subnetName=$web_subnet_name availabilityZone=1
 ```
