@@ -95,7 +95,7 @@
       }
     },
     "variables": {
-      "containerImage": "securenetworkingopenhack/yadaweb:1.0",
+      "containerImage": "securenetworkingopenhack/ohndweb:1.0",
       "networkInterfaceName": "[format('{0}-nic', parameters('vmName'))]",
       "osDiskType": "Standard_LRS",
       "branding": "openhack",
