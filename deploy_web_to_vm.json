@@ -11,7 +11,6 @@
     "parameters": {
       "vmName": {
         "type": "string",
-        "defaultValue": "api01",
         "metadata": {
           "description": "The name of you Virtual Machine."
         }
@@ -53,23 +52,20 @@
       },
       "virtualNetworkName": {
         "type": "string",
-        "defaultValue": "myVNet",
         "metadata": {
           "description": "Name of the VNet. Needs to have been previously created in the same RG where the VM will be deployed"
         }
       },
       "subnetName": {
         "type": "string",
-        "defaultValue": "mySubnet",
         "metadata": {
           "description": "Name of the subnet in the virtual network. Needs to have been previously created"
         }
       },
       "apiUrl":{
         "type": "string",
-        "defaultValue": "http://1.2.3.4:8080",
         "metadata": {
-            "description": "Container image that will be launched"
+            "description": "URL to reach the API tier, for example http://1.2.3.4:8080"
         }
       },
       "backgroundColor": {
