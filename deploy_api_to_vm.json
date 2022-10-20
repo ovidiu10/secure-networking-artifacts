@@ -11,7 +11,6 @@
     "parameters": {
       "vmName": {
         "type": "string",
-        "defaultValue": "api01",
         "metadata": {
           "description": "The name of you Virtual Machine."
         }
@@ -53,21 +52,18 @@
       },
       "virtualNetworkName": {
         "type": "string",
-        "defaultValue": "myVNet",
         "metadata": {
           "description": "Name of the VNet. Needs to have been previously created in the same RG where the VM will be deployed"
         }
       },
       "subnetName": {
         "type": "string",
-        "defaultValue": "mySubnet",
         "metadata": {
           "description": "Name of the subnet in the virtual network. Needs to have been previously created"
         }
       },
       "sqlServerFQDN":{
         "type": "string",
-        "defaultValue": "yoursqlserver.database.windows.net",
         "metadata": {
             "description": "Fully-Qualified Domain Name or IP address of SQL Server"
         }
@@ -76,7 +72,7 @@
         "type": "string",
         "defaultValue": "demouser",
         "metadata": {
-            "description": "User for SQL auth"
+            "description": "Username for SQL auth"
         }
       },
       "sqlServerPassword":{
