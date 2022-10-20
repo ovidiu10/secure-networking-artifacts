@@ -67,7 +67,7 @@
       },
       "apiUrl":{
         "type": "string",
-        "defaultValue": "yoursqlserver.database.windows.net",
+        "defaultValue": "http://1.2.3.4:8080",
         "metadata": {
             "description": "Container image that will be launched"
         }
