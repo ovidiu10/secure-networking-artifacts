@@ -69,7 +69,7 @@
         "type": "string",
         "defaultValue": "yoursqlserver.database.windows.net",
         "metadata": {
-            "description": "Container image that will be launched"
+            "description": "Fully-Qualified Domain Name or IP address of SQL Server"
         }
       },
       "sqlServerUser":{
