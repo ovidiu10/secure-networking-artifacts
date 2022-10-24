@@ -1,0 +1,170 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "metadata": {
+      "_generator": {
+        "name": "bicep",
+        "version": "0.8.9.13224",
+        "templateHash": "15559643551456468043"
+      }
+    },
+    "parameters": {
+      "vmName": {
+        "type": "string",
+        "metadata": {
+          "description": "The name of you Virtual Machine."
+        }
+      },
+      "adminUsername": {
+        "type": "string",
+        "defaultValue": "demouser",
+        "metadata": {
+          "description": "SSH username for the Virtual Machine."
+        }
+      },
+      "adminPassword": {
+        "type": "securestring",
+        "defaultValue": "demo!pass123",
+        "metadata": {
+          "description": "SSH password for the Virtual Machine."
+        }
+      },
+      "location": {
+        "type": "string",
+        "defaultValue": "[resourceGroup().location]",
+        "metadata": {
+          "description": "Location for all resources."
+        }
+      },
+      "availabilityZone": {
+        "type": "string",
+        "defaultValue": "",
+        "metadata": {
+          "description": "Availability Zone for VM. If not specified no AZs will be used"
+        }
+      },
+      "vmSize": {
+        "type": "string",
+        "defaultValue": "Standard_B1s",
+        "metadata": {
+          "description": "The size of the VM"
+        }
+      },
+      "virtualNetworkName": {
+        "type": "string",
+        "metadata": {
+          "description": "Name of the VNet. Needs to have been previously created in the same RG where the VM will be deployed"
+        }
+      },
+      "subnetName": {
+        "type": "string",
+        "metadata": {
+          "description": "Name of the subnet in the virtual network. Needs to have been previously created"
+        }
+      },
+      "sqlServerFQDN":{
+        "type": "string",
+        "metadata": {
+            "description": "Fully-Qualified Domain Name or IP address of SQL Server"
+        }
+      },
+      "sqlServerUser":{
+        "type": "string",
+        "defaultValue": "demouser",
+        "metadata": {
+            "description": "Username for SQL auth"
+        }
+      },
+      "sqlServerPassword":{
+        "type": "securestring",
+        "defaultValue": "demo!pass123",
+        "metadata": {
+            "description": "Password for SQL auth"
+        }
+      }
+    },
+    "variables": {
+      "publisher": "Canonical",
+      "offer": "0001-com-ubuntu-server-focal",
+      "sku": "20_04-lts-gen2",
+      "version": "latest",
+      "containerImage": "securenetworkingopenhack/ohndapi:1.0",
+      "networkInterfaceName": "[format('{0}-nic', parameters('vmName'))]",
+      "osDiskType": "Standard_LRS",
+      "customData_line1": "#!/bin/bash\n",
+      "customData_line2": "apt update\n",
+      "customData_line3": "apt install -y apt-transport-https ca-certificates curl software-properties-common\n",
+      "customData_line4": "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -\n",
+      "customData_line5": "add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable\"\n",
+      "customData_line6": "apt-cache policy docker-ce\n",
+      "customData_line7": "apt install -y docker-ce\n",
+      "customData_line8": "[concat('docker run --restart always -d -p 8080:8080 -e \"SQL_SERVER_FQDN=', parameters('sqlServerFQDN'),'\" -e \"SQL_SERVER_USERNAME=', parameters('sqlServerUser'),'\" -e \"SQL_SERVER_PASSWORD=', parameters('sqlServerPassword'),'\" --name api ', variables('containerImage'))]",
+      "customData": "[concat(variables('customData_line1'), variables('customData_line2'), variables('customData_line3'), variables('customData_line4'), variables('customData_line5'), variables('customData_line6'), variables('customData_line7'), variables('customData_line8'))]"
+    },
+    "resources": [
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2021-05-01",
+        "name": "[variables('networkInterfaceName')]",
+        "location": "[parameters('location')]",
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "subnet": {
+                  "id": "[concat(resourceGroup().id, '/providers/Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'), '/subnets/', parameters('subnetName'))]"
+                },
+                "privateIPAllocationMethod": "Dynamic"
+              }
+            }
+          ]
+        },
+        "dependsOn": []
+      },
+      {
+        "type": "Microsoft.Compute/virtualMachines",
+        "apiVersion": "2021-11-01",
+        "name": "[parameters('vmName')]",
+        "location": "[parameters('location')]",
+        "zones": "[if(empty(parameters('availabilityZone')),parameters('availabilityZone'),array(parameters('availabilityZone')))]",
+        "properties": {
+          "hardwareProfile": {
+            "vmSize": "[parameters('vmSize')]"
+          },
+          "storageProfile": {
+            "osDisk": {
+              "createOption": "FromImage",
+              "managedDisk": {
+                "storageAccountType": "[variables('osDiskType')]"
+              }
+            },
+            "imageReference": {
+              "publisher": "[variables('publisher')]",
+              "offer": "[variables('offer')]",
+              "sku": "[variables('sku')]",
+              "version": "[variables('version')]"
+            }
+          },
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]"
+              }
+            ]
+          },
+          "osProfile": {
+            "computerName": "[parameters('vmName')]",
+            "customData": "[base64(variables('customData'))]",
+            "adminUsername": "[parameters('adminUsername')]",
+            "adminPassword": "[parameters('adminPassword')]"
+          }
+        },
+        "dependsOn": [
+          "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]"
+        ]
+      }
+    ],
+    "outputs": {
+    }
+  }
