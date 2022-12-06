@@ -23,7 +23,7 @@ api_subnet_name=your_app_subnet
 sql_server_fqdn=fully_qualified_domain_name_of_a_SQL_server
 sql_username=demouser
 sql_password='demo!pass123'
-web_template_uri='https://raw.githubusercontent.com/Microsoft-OpenHack/secure-networking-artifacts/main/deploy_web_to_vm.json'
+api_template_uri='https://raw.githubusercontent.com/Microsoft-OpenHack/secure-networking-artifacts/main/deploy_api_to_vm.json'
 
 # Create VM for API tier
 echo "Creating API VM..."
