@@ -1,6 +1,6 @@
 # Secure Networking OpenHack Artifacts
 
-You can find in this repository assets required for the Secure Networking [OpenHack](https://openhack.microsoft.com).
+You can find in this repository assets required for the Secure Networking [OpenHack](https://openhack.microsoft.com) to deploy the application required (you can find the source code for the application [here](https://github.com/Microsoft/YADA)).
 
 ## OpenHack Network Diagnostics (OHND) application
 
